@@ -1,6 +1,7 @@
 package com.opuscapita.demo.products.product;
 
 import com.opuscapita.demo.error.ValidationErrorResponseDto;
+import com.opuscapita.demo.products.model.Product;
 import com.opuscapita.demo.products.model.ProductsRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,19 +32,19 @@ public class ProductController {
         @ApiResponse(code = 400, message = "Input validation failed.", response = ValidationErrorResponseDto.class)
     })
     public ProductDto addProduct(@Valid @RequestBody ProductInfoDto productInfo) {
-        var product = productsRepository.addProduct(productInfo);
+        Product product = productsRepository.addProduct(productInfo);
         return productMapper.map(product);
     }
 
     @GetMapping("/products/{id}")
     public ProductDto getProduct(@PathVariable String id) {
-        var product = productsRepository.getProduct(id);
+        Product product = productsRepository.getProduct(id);
         return productMapper.map(product);
     }
 
     @PatchMapping("/products/{id}")
     public ProductDto updateProduct(@PathVariable String id, @Valid @RequestBody ProductInfoDto productInfo) {
-        var product = productsRepository.updateProduct(id, productInfo);
+        Product product = productsRepository.updateProduct(id, productInfo);
         return productMapper.map(product);
     }
 

@@ -37,7 +37,7 @@ public class ProductsRepository {
 
     public Product addProduct(ProductInfoDto productInfo) {
         String id = idGenerator.generate(PRODUCT_ID_LENGTH);
-        var product = new Product(id, productInfo.getName(), productInfo.getDescription());
+        Product product = new Product(id, productInfo.getName(), productInfo.getDescription());
         products.put(id, product);
 
         return product;

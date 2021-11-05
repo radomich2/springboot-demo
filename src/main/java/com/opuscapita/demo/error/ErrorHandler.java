@@ -38,7 +38,7 @@ public class ErrorHandler {
 
         String errorStr = errorToString(e);
         log.error(formatErrorStr(errorStr, request), e);
-        var responseDto = new ErrorResponseDto(errorStr);
+        ErrorResponseDto responseDto = new ErrorResponseDto(errorStr);
         request.setAttribute(AppErrorController.ERROR_RESPONSE_ATTR, responseDto);
         return responseDto;
     }

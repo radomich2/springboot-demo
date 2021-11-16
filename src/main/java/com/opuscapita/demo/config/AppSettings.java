@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 
 @Configuration
-@ConfigurationProperties("my-settings")
+@ConfigurationProperties("app")
 public class AppSettings {
 
     static final Logger log = LoggerFactory.getLogger(AppSettings.class);

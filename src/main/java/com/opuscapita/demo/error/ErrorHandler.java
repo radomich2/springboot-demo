@@ -32,12 +32,25 @@ public class ErrorHandler {
         return new ValidationErrorResponseDto(errorStr, errors);
     }
 
+    @ExceptionHandler(ApiNotFoundError.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponseDto onApiNotFoundError(HttpServletRequest request, ApiNotFoundError e) {
+        return createErrorResponseDto(request, e, false);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDto onOtherExceptions(HttpServletRequest request, Exception e) {
+        return createErrorResponseDto(request, e, true);
+    }
 
+    private ErrorResponseDto createErrorResponseDto(HttpServletRequest request, Exception e, boolean logStackTrace) {
         String errorStr = errorToString(e);
-        log.error(formatErrorStr(errorStr, request), e);
+        if (logStackTrace) {
+            log.error(formatErrorStr(errorStr, request), e);
+        } else {
+            log.error(formatErrorStr(errorStr, request));
+        }
         ErrorResponseDto responseDto = new ErrorResponseDto(errorStr);
         request.setAttribute(AppErrorController.ERROR_RESPONSE_ATTR, responseDto);
         return responseDto;

@@ -1,72 +1,45 @@
 package com.opuscapita.demo.products.model;
 
-import com.opuscapita.demo.config.AppSettings;
-import com.opuscapita.demo.products.product.ProductInfoDto;
-import org.apache.commons.text.RandomStringGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.opuscapita.demo.products.list.ProductSummaryDto;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-/**
- * Not thread safe! Only for trivial example.
- */
-@Service
-public class ProductsRepository {
+@Repository
+public interface ProductsRepository extends JpaRepository<Product, Long> {
 
-    private static final int PRODUCT_ID_LENGTH = 12;
+    //@EntityGraph(attributePaths = {"category"})
+    List<Product> findAll();
 
-    private RandomStringGenerator idGenerator;
 
-    private AppSettings appSettings;
 
-    private Map<String, Product> products = new HashMap<>();
+    @Query("SELECT p FROM Product p JOIN FETCH p.category")
+    List<Product> getAllWithCategories(Sort sort);
 
-    @Autowired
-    public ProductsRepository(RandomStringGenerator idGenerator, AppSettings appSettings) {
-        this.idGenerator = idGenerator;
-        this.appSettings = appSettings;
-    }
 
-    public List<Product> getAllProducts() {
-        return products.values().stream().collect(Collectors.toList());
-    }
 
-    public Product addProduct(ProductInfoDto productInfo) {
-        String id = idGenerator.generate(PRODUCT_ID_LENGTH);
-        Product product = new Product(id, productInfo.getName(), productInfo.getDescription());
-        products.put(id, product);
+    // findAll         - SELECT products.*
+    // By              - WHERE
+    // ProductNameLike -  products.product_name LIKE ?
+    // And             -  AND
+    // CategoryIdIn    -  products.category_id IN(?)
+    // OrderByIdDesc   - ORDER BY ...
+    //
+    // See all method naming conventions at:
+    // https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
+    //
+    @EntityGraph(attributePaths = {"category"})
+    List<Product> findAllByProductNameLikeAndCategoryIdInOrderByIdDesc(String productName, Collection<Long> categoryId);
 
-        return product;
-    }
 
-    public Product updateProduct(String id, ProductInfoDto productInfo) {
-        ensureProductExists(id);
-        Product product = products.get(id);
-        product.update(
-            productInfo.getName(),
-            productInfo.getDescription()
-        );
-        return product;
-    }
-
-    public Product deleteProduct(String id) {
-        ensureProductExists(id);
-        return products.remove(id);
-    }
-
-    public Product getProduct(String id) {
-        ensureProductExists(id);
-        return products.get(id);
-    }
-
-    private void ensureProductExists(String id) {
-        if (!products.containsKey(id)) {
-            throw new RuntimeException("Product #"+id+" not found!");
-        }
-    }
-
+    // ProductSummaryDto interface has no implementation!
+    @Query("SELECT CONCAT(p.productName, ' #', p.id) AS productSummary," +
+        "          CONCAT(c.categoryName, ' #', c.id)  AS categorySummary" +
+        " FROM Product p INNER JOIN p.category c")
+    List<ProductSummaryDto> getProductsAsSummary();
 }

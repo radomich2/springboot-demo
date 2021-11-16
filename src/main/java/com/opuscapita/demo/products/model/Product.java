@@ -1,44 +1,71 @@
 package com.opuscapita.demo.products.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
 import java.time.Instant;
 
 /**
  * Our internal representation of a Product model.
  * Do not share internal details over the REST API!
  */
+@Entity
+@Table(name = "products")
 public class Product {
-    private String id;
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Version
+    private long version;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @Column
+    private String productName;
+
+    @Column
+    @Type(type="text")
     private String description;
+
+    @Column
+    @CreationTimestamp
     private Instant createdAt;
+
+    @Column
+    @UpdateTimestamp
     private Instant updatedAt;
 
-    public Product(String id, String name, String description) {
-        this.id = id;
-        createdAt = Instant.now();
-        update(name, description);
+    Product() { /* JPA only */ }
+
+    public Product(String productName, String description, Category category) {
+        update(productName, description, category);
     }
 
-    public Product(String name, String description) {
-        updatedAt = Instant.now();
-        update(name, description);
-    }
-
-    public final void update(String name, String description) {
-        this.name = name;
+    public final void update(String productName, String description, Category category) {
+        this.productName = productName;
         this.description = description;
+        this.category = category;
     }
 
-    public boolean isUpdated() {
-        return updatedAt != null;
-    }
-
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public Long getVersion() {
+        return version;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getProductName() {
+        return productName;
     }
 
     public String getDescription() {

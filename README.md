@@ -55,8 +55,9 @@ CREATE TABLE `products` (
 - DataSource and JPA [configuration](src/main/resources/application.properties)
 - Entities:
   [Product](src/main/java/com/opuscapita/demo/products/model/Product.java) /
-  [Category](src/main/java/com/opuscapita/demo/products/model/Product.java)
+  [Category](src/main/java/com/opuscapita/demo/products/model/Category.java)
 - Product CRUD [REST controller](src/main/java/com/opuscapita/demo/products/product/ProductController.java)
 - Product service [on bare JPA](src/main/java/com/opuscapita/demo/products/product/ProductServiceWithJpa.java)
 - Product service [on Spring repository](src/main/java/com/opuscapita/demo/products/product/ProductServiceWithRepositories.java)
+- Product service [configuration](src/main/java/com/opuscapita/demo/config/BeansConfig.java)
 - Product list [REST controller](src/main/java/com/opuscapita/demo/products/list/ProductListController.java)

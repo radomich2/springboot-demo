@@ -6,6 +6,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Our internal representation of a Product model.
@@ -14,6 +16,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -25,11 +28,18 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+//    @ManyToMany(mappedBy = "productSet")
+//    Set<Orders> orderSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "product")
+    Set<OrderProduct> orderProducts=new HashSet<>();
+
+
     @Column
     private String productName;
 
     @Column
-    @Type(type="text")
+    @Type(type = "text")
     private String description;
 
     @Column
@@ -52,7 +62,7 @@ public class Product {
         this.category = category;
     }
 
-    public Long getId() {
+    public Long getProductId() {
         return id;
     }
 
@@ -78,5 +88,13 @@ public class Product {
 
     public Instant getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Set<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(Set<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

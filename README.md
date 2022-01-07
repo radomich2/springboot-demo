@@ -61,3 +61,80 @@ CREATE TABLE `products` (
 - Product service [on Spring repository](src/main/java/com/opuscapita/demo/products/product/ProductServiceWithRepositories.java)
 - Product service [configuration](src/main/java/com/opuscapita/demo/config/BeansConfig.java)
 - Product list [REST controller](src/main/java/com/opuscapita/demo/products/list/ProductListController.java)
+
+ JSON request to create an order: Product should be exist in databse beforehand.
+
+```JSON
+{
+  "orderDescription":"order4",
+  "price":"1200",
+  "productDetails":{
+    "productDetail":[
+      {
+        "productId":"2",
+        "productNumbers":"30"
+      },
+      {
+        "productId":"3",
+        "productNumbers":"105"
+      }
+    ]
+  }
+}
+```
+
+JSON request to update an order: There is a different flag that what you want to be updated.
+
+```JSON
+{
+  "orderDescription":"new order",
+  "price":"1220",
+  "id":"16",
+  "isAdd":false,
+  "isRemoved":false,
+  "isPricedAltered":false,
+  "isQuantityAltered":true,
+  "productDetails":{
+    "productDetail":[
+      {
+        "productId":"1",
+        "productNumbers":"330"
+      },
+      {
+        "productId":"4",
+        "productNumbers":"330"
+      }
+    ]
+  }
+}
+```
+JSON request to remove an order
+
+```JSON
+{
+	 "id":"17"
+}	
+```
+
+get request to get three best selleres products: http://localhost:8080/bestsellers
+and it will return JSON responce such below:
+
+```JSON
+[
+	{
+		"productId": "3",
+		"quantity": "1183",
+		"productName": "mouse"
+	},
+	{
+		"productId": "4",
+		"quantity": "210",
+		"productName": "screen"
+	},
+	{
+		"productId": "2",
+		"quantity": "135",
+		"productName": "keyboard4"
+	}
+]
+```

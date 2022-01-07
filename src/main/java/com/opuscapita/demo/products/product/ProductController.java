@@ -21,6 +21,8 @@ public class ProductController {
 
     private ProductMapper productMapper;
 
+
+
     @Autowired
     public ProductController(
         @Qualifier(BeansConfig.PRODUCT_SERVICE_JPA) ProductService service,
@@ -38,6 +40,7 @@ public class ProductController {
     public ProductDto addProduct(@Valid @RequestBody ProductInfoDto productInfo) {
         Product product = service.addProduct(productInfo);
         return productMapper.map(product);
+
     }
 
     @GetMapping("/products/{id}")

@@ -27,7 +27,7 @@ public class ProductInfoDto {
     public ProductInfoDto(String productName, String description, Long categoryId) {
         this.productName = StringUtils.trimToNull(productName);
         this.description = StringUtils.trimToNull(description);
-        this.categoryId = categoryId;
+        this.categoryId  = categoryId;
     }
 
     public String getProductName() {

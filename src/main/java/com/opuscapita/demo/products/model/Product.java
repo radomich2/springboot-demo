@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
@@ -33,6 +34,9 @@ public class Product {
     private String description;
 
     @Column
+    private BigDecimal price;
+
+    @Column
     @CreationTimestamp
     private Instant createdAt;
 
@@ -42,13 +46,14 @@ public class Product {
 
     Product() { /* JPA only */ }
 
-    public Product(String productName, String description, Category category) {
-        update(productName, description, category);
+    public Product(String productName, String description, BigDecimal price, Category category) {
+        update(productName, description, price, category);
     }
 
-    public final void update(String productName, String description, Category category) {
+    public final void update(String productName, String description, BigDecimal price, Category category) {
         this.productName = productName;
         this.description = description;
+        this.price = price;
         this.category = category;
     }
 
@@ -70,6 +75,10 @@ public class Product {
 
     public String getDescription() {
         return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public Instant getCreatedAt() {

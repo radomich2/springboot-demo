@@ -1,22 +1,23 @@
 package com.opuscapita.demo.products.dto;
 
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import java.math.BigDecimal;
 
-//@JsonIncludeProperties({"id", "productName", "categoryName"})
 public class ProductDto {
     private Long id;
     private Long version;
     private String productName;
     private String description;
+    private BigDecimal price;
     private String categoryName;
     private Long createdAt;
     private Long updatedAt;
 
-    public ProductDto(Long id, Long version, String productName, String description, String categoryName, Long createdAt, Long updatedAt) {
+    public ProductDto(Long id, Long version, String productName, String description, BigDecimal price, String categoryName, Long createdAt, Long updatedAt) {
         this.id = id;
         this.version = version;
         this.productName = productName;
         this.description = description;
+        this.price = price;
         this.categoryName = categoryName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -36,6 +37,10 @@ public class ProductDto {
 
     public String getDescription() {
         return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public String getCategoryName() {

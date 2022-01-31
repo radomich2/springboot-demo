@@ -15,6 +15,7 @@ public class ProductMapper {
             product.getVersion(),
             product.getProductName(),
             product.getDescription(),
+            product.getPrice(),
             product.getCategory().getCategoryName(),
             instantToTimestamp(product.getCreatedAt()),
             instantToTimestamp(product.getUpdatedAt())

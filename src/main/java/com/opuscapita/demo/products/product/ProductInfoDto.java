@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.opuscapita.demo.products.validation.ValidCategoryId;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 public class ProductInfoDto {
 
@@ -23,11 +22,18 @@ public class ProductInfoDto {
     @ValidCategoryId
     private Long categoryId;
 
+    @NotNull
+    @DecimalMin("1.00")
+    @DecimalMax("99999.99")
+    @Digits(integer = 5, fraction = 2)
+    private BigDecimal price;
+
     @JsonCreator
-    public ProductInfoDto(String productName, String description, Long categoryId) {
+    public ProductInfoDto(String productName, String description, Long categoryId, BigDecimal price) {
         this.productName = StringUtils.trimToNull(productName);
         this.description = StringUtils.trimToNull(description);
         this.categoryId = categoryId;
+        this.price = price;
     }
 
     public String getProductName() {
@@ -40,5 +46,9 @@ public class ProductInfoDto {
 
     public Long getCategoryId() {
         return categoryId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 }

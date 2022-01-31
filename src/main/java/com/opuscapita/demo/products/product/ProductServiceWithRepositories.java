@@ -23,7 +23,7 @@ public class ProductServiceWithRepositories implements ProductService {
     @Transactional
     public Product addProduct(ProductInfoDto productInfo) {
         Category category = findCategory(productInfo.getCategoryId());
-        Product product = new Product(productInfo.getProductName(), productInfo.getDescription(), category);
+        Product product = new Product(productInfo.getProductName(), productInfo.getDescription(), productInfo.getPrice(), category);
         productsRepo.save(product);
         return product;
     }
@@ -36,6 +36,7 @@ public class ProductServiceWithRepositories implements ProductService {
         product.update(
             productInfo.getProductName(),
             productInfo.getDescription(),
+            productInfo.getPrice(),
             category
         );
         return product;

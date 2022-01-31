@@ -38,6 +38,14 @@ public class ErrorHandler {
         return createErrorResponseDto(request, e, false);
     }
 
+    @ExceptionHandler(ApiClientError.Error.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ClientErrorResponseDto onApiClientError(HttpServletRequest request, ApiClientError.Error e) {
+        String errorCode = e.getMessage();
+        log.info(formatErrorStr(errorCode, request));
+        return new ClientErrorResponseDto(errorCode, e.getDetails());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDto onOtherExceptions(HttpServletRequest request, Exception e) {
@@ -58,7 +66,7 @@ public class ErrorHandler {
 
     private String formatErrorStr(String errorMessage, HttpServletRequest request) {
         return String.format(
-            "Error handled at [%s %s]: %s",
+            "At [%s %s]: %s",
             request.getMethod(),
             request.getServletPath(),
             errorMessage);

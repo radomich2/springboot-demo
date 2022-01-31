@@ -30,28 +30,6 @@ Also might implement some more features beyond the standard.
 ---
 # Demo
 
-```SQL
-CREATE TABLE `categories` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Categories';
-
-CREATE TABLE `products` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) unsigned NOT NULL,
-  `category_id` bigint(20) unsigned DEFAULT NULL,
-  `product_name` varchar(100) NOT NULL,
-  `description` text NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `products_category_FK` (`category_id`),
-  CONSTRAINT `products_category_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Products';
-```
-
-
 - DataSource and JPA [configuration](src/main/resources/application.properties)
 - Entities:
   [Product](src/main/java/com/opuscapita/demo/products/model/Product.java) /

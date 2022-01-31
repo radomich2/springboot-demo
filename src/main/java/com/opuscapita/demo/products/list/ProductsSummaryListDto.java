@@ -1,7 +1,6 @@
 package com.opuscapita.demo.products.list;
 
-import com.opuscapita.demo.products.dto.ListDto;
-import com.opuscapita.demo.products.dto.ProductDto;
+import com.opuscapita.demo.dto.ListDto;
 
 import java.util.List;
 
